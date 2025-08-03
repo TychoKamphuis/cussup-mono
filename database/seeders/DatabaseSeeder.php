@@ -2,9 +2,11 @@
 
 namespace Database\Seeders;
 
+use App\Models\Tenant;
 use App\Models\User;
-// use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
 
 class DatabaseSeeder extends Seeder
 {
@@ -13,11 +15,16 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::factory(10)->create();
+        // Create a default tenant
+        $tenant = Tenant::create([
+            'uuid' => Str::uuid(),
+            'name' => 'Default Tenant',
+            'domain' => 'localhost',
+        ]);
 
-        User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
+        // Call the UserSeeder to create users and associate them with tenants
+        $this->call([
+            UserSeeder::class,
         ]);
     }
 }

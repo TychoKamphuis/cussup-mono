@@ -22,12 +22,28 @@ export interface NavItem {
     isActive?: boolean;
 }
 
+export interface Tenant {
+    id: number;
+    uuid: string;
+    name: string;
+}
+
 export interface SharedData {
     name: string;
-    quote: { message: string; author: string };
-    auth: Auth;
-    ziggy: Config & { location: string };
+    quote: {
+        message: string;
+        author: string;
+    };
+    auth: {
+        user: User | null;
+    };
+    tenant: Tenant | null;
+    ziggy: {
+        location: string;
+        [key: string]: unknown;
+    };
     sidebarOpen: boolean;
+
     [key: string]: unknown;
 }
 

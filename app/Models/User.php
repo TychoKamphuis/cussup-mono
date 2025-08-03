@@ -4,6 +4,7 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
@@ -44,5 +45,27 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    /**
+     * Get the tenants that the user belongs to.
+     */
+    public function tenants(): BelongsToMany
+    {
+        return $this->belongsToMany(Tenant::class, 'users_to_tenants')
+                    ->withPivot('role', 'permissions', 'is_active')
+                    ->withTimestamps();
+    }
+
+    /**
+     * Get the active tenant for the user (from session or first available).
+     */
+    public function activeTenant()
+    {
+        if (session()->has('active_tenant')) {
+            return session('active_tenant');
+        }
+        
+        return $this->tenants()->where('is_active', true)->first();
     }
 }
