@@ -3,9 +3,10 @@ import { NavMain } from '@/components/nav-main';
 import { NavUser } from '@/components/nav-user';
 import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from '@/components/ui/sidebar';
 import { type NavItem } from '@/types';
-import { Link } from '@inertiajs/react';
+import { Link, usePage } from '@inertiajs/react';
 import { BookOpen, Folder, LayoutGrid } from 'lucide-react';
 import AppLogo from './app-logo';
+import { TenantSelector } from './tenant-selector';
 
 const mainNavItems: NavItem[] = [
     {
@@ -29,15 +30,23 @@ const footerNavItems: NavItem[] = [
 ];
 
 export function AppSidebar() {
+    const { props } = usePage();
+    const currentTenant = props.currentTenant;
+    const tenants = props.tenants || [];
+
     return (
         <Sidebar collapsible="icon" variant="inset">
             <SidebarHeader>
                 <SidebarMenu>
                     <SidebarMenuItem>
                         <SidebarMenuButton size="lg" asChild>
-                            <Link href="/dashboard" prefetch>
-                                <AppLogo />
-                            </Link>
+                        <TenantSelector 
+                            currentTenant={currentTenant} 
+                            tenants={tenants}
+                            className="mt-0"
+                        />
+                            
+                            
                         </SidebarMenuButton>
                     </SidebarMenuItem>
                 </SidebarMenu>

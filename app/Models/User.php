@@ -56,16 +56,4 @@ class User extends Authenticatable
                     ->withPivot('role', 'permissions', 'is_active')
                     ->withTimestamps();
     }
-
-    /**
-     * Get the active tenant for the user (from session or first available).
-     */
-    public function activeTenant()
-    {
-        if (session()->has('active_tenant')) {
-            return session('active_tenant');
-        }
-        
-        return $this->tenants()->where('is_active', true)->first();
-    }
 }

@@ -35,9 +35,8 @@ return [
      * A valid task is any class that implements Spatie\Multitenancy\Tasks\SwitchTenantTask
      */
     'switch_tenant_tasks' => [
-        // \Spatie\Multitenancy\Tasks\PrefixCacheTask::class,
-        // \Spatie\Multitenancy\Tasks\SwitchTenantDatabaseTask::class,
-        // \Spatie\Multitenancy\Tasks\SwitchRouteCacheTask::class,
+        \Spatie\Multitenancy\Tasks\PrefixCacheTask::class,
+        \Spatie\Multitenancy\Tasks\SwitchRouteCacheTask::class,
     ],
 
     /*

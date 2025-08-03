@@ -2,6 +2,7 @@
 
 use App\Http\Middleware\HandleAppearance;
 use App\Http\Middleware\HandleInertiaRequests;
+use App\Http\Middleware\ShareTenantData;
 use App\Http\Middleware\TenantMiddleware;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
@@ -25,6 +26,7 @@ return Application::configure(basePath: dirname(__DIR__))
 
         $middleware->group('tenant', [
             TenantMiddleware::class,
+            ShareTenantData::class,
             \Spatie\Multitenancy\Http\Middleware\NeedsTenant::class,
             \Spatie\Multitenancy\Http\Middleware\EnsureValidTenantSession::class,
         ]);

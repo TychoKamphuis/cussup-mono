@@ -5,9 +5,9 @@ namespace App\Http\Middleware;
 use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
-use App\Models\Tenant;
+use Inertia\Inertia;
 
-class TenantMiddleware
+class ShareTenantData
 {
     /**
      * Handle an incoming request.
@@ -17,17 +17,15 @@ class TenantMiddleware
     public function handle(Request $request, Closure $next): Response
     {
         if (\Illuminate\Support\Facades\Auth::check()) {
-            if (!session()->has('tenantId')) {
-                $user = \Illuminate\Support\Facades\Auth::user();
-                $tenant = $user->tenants()->first();
-                $tenant->makeCurrent();
-                session()->put('tenantId', $tenant->id);
-            } else {
-                $tenant = Tenant::find(session('tenantId'));
-                $tenant->makeCurrent();
-            }
+            $user = \Illuminate\Support\Facades\Auth::user();
+            $tenants = $user->tenants()->get();
+
+            Inertia::share([
+                'tenants' => $tenants,
+                'currentTenant' => app('currentTenant'),
+            ]);
         }
-        
+
         return $next($request);
     }
-}
+} 
